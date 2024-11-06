@@ -4,9 +4,14 @@ import google.generativeai as genai
 import logging
 import cv2
 import time
+from dotenv import load_dotenv 
+import os
+
+load_dotenv() # Load environment variables from .env file
 
 # Configure generative AI API
-genai.configure(api_key="AIzaSyCWQVBBgIRIowkV3aBD1UxaNfuqLyiT1q0")
+genai_api_key = os.getenv("GENERATIVE_AI_API_KEY")
+genai.configure(api_key=genai_api_key)
 
 # Load the YOLO model
 model = YOLO('ModelForCAI.pt')
