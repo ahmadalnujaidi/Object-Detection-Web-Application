@@ -3,17 +3,58 @@
   <head>
     <meta charset="UTF-8" />
     <title>Real-Time Object Detection</title>
+    <script>
+      // Function to fetch detection log from the server
+      async function updateDetectionLog() {
+        try {
+          const response = await fetch("/detection_log");
+          const data = await response.json();
+
+          const logDiv = document.getElementById("detection-log");
+          logDiv.innerHTML = "";
+          data.forEach((item) => {
+            const p = document.createElement("p");
+            p.textContent = item;
+            logDiv.appendChild(p);
+          });
+        } catch (error) {
+          console.error("Error fetching detection log:", error);
+        }
+      }
+
+      // Function to fetch generative story from the server
+      async function updateStoryText() {
+        try {
+          const response = await fetch("/generate_story");
+          const data = await response.json();
+          document.getElementById("story-text").textContent = data.story;
+        } catch (error) {
+          console.error("Error fetching story text:", error);
+        }
+      }
+
+      // Update the detection log every second and story text every 5 seconds
+      setInterval(updateDetectionLog, 1000);
+      setInterval(updateStoryText, 5000);
+    </script>
   </head>
   <body>
     <h1>YOLO Real-Time Object Detection</h1>
     <div>
-      <!-- Display the video feed from the video_feed route -->
       <img
         src="{{ url_for('video_feed') }}"
         width="640"
         height="480"
         alt="Video Stream"
       />
+    </div>
+    <h2>Detection Log</h2>
+    <div id="detection-log">
+      <!-- The detection log will appear here -->
+    </div>
+    <h2>Story Description</h2>
+    <div id="story-text">
+      <!-- The story description will appear here -->
     </div>
   </body>
 </html>
