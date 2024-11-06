@@ -3,6 +3,101 @@
   <head>
     <meta charset="UTF-8" />
     <title>Real-Time Object Detection</title>
+
+    <!-- Font Awesome for social icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <style>
+      /* General styling */
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        font-family: Arial, sans-serif;
+      }
+
+      h1 {
+        margin-top: 20px;
+      }
+
+      /* Centering camera feed */
+      .camera-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      /* Detection log table on the right */
+      .detection-log-container {
+        position: absolute;
+        top: 50px;
+        right: 50px;
+        width: 250px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        background-color: #f8f9fa;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: white;
+      }
+
+      /* Story description at the bottom */
+      .story-container {
+        width: 80%;
+        margin-top: 20px;
+        padding: 15px;
+        border-top: 2px solid #4caf50;
+        text-align: center;
+      }
+
+      /* Footer styling */
+      footer {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+        background-color: #333;
+        color: white;
+        margin-top: 20px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+      }
+
+      .footer-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .footer-content a {
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+      }
+
+      .footer-content a:hover {
+        color: #4caf50; /* Change color on hover */
+      }
+    </style>
+
     <script>
       // Function to fetch detection log from the server
       async function updateDetectionLog() {
@@ -10,12 +105,21 @@
           const response = await fetch("/detection_log");
           const data = await response.json();
 
-          const logDiv = document.getElementById("detection-log");
-          logDiv.innerHTML = "";
+          const logBody = document.getElementById("detection-log-body");
+          logBody.innerHTML = "";
           data.forEach((item) => {
-            const p = document.createElement("p");
-            p.textContent = item;
-            logDiv.appendChild(p);
+            const [detection, direction] = item.split(" in ");
+            const row = document.createElement("tr");
+
+            const detectionCell = document.createElement("td");
+            detectionCell.textContent = detection;
+            row.appendChild(detectionCell);
+
+            const directionCell = document.createElement("td");
+            directionCell.textContent = direction;
+            row.appendChild(directionCell);
+
+            logBody.appendChild(row);
           });
         } catch (error) {
           console.error("Error fetching detection log:", error);
@@ -33,14 +137,16 @@
         }
       }
 
-      // Update the detection log every second and story text every 5 seconds
+      // Update the detection log every second and story text every 7 seconds
       setInterval(updateDetectionLog, 1000);
-      setInterval(updateStoryText, 5000);
+      setInterval(updateStoryText, 7000);
     </script>
   </head>
   <body>
     <h1>YOLO Real-Time Object Detection</h1>
-    <div>
+
+    <!-- Centered Camera Feed -->
+    <div class="camera-container">
       <img
         src="{{ url_for('video_feed') }}"
         width="640"
@@ -48,13 +154,39 @@
         alt="Video Stream"
       />
     </div>
-    <h2>Detection Log</h2>
-    <div id="detection-log">
-      <!-- The detection log will appear here -->
+
+    <!-- Detection Log Table on the Right -->
+    <div class="detection-log-container">
+      <h2>Detection Log</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Detection</th>
+            <th>Direction</th>
+          </tr>
+        </thead>
+        <tbody id="detection-log-body">
+          <!-- Detection log data will appear here -->
+        </tbody>
+      </table>
     </div>
-    <h2>Story Description</h2>
-    <div id="story-text">
-      <!-- The story description will appear here -->
+
+    <!-- Story Description at the Bottom -->
+    <div class="story-container" id="story-text">
+      <!-- The generative AI story description will appear here -->
     </div>
+
+    <!-- Footer with social links -->
+    <footer>
+      <div class="footer-content">
+        <span>© 2024 Ahmad Alnujaidi</span>
+        <a href="https://github.com/ahmadalnujaidi" target="_blank">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://linkedin.com/in/ahmadalnujaidi" target="_blank">
+          <i class="fab fa-linkedin"></i> LinkedIn
+        </a>
+      </div>
+    </footer>
   </body>
 </html>
