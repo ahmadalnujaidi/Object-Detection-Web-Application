@@ -109,7 +109,7 @@ def generate_story():
         # Create a summary of the detections
         if detection_log:
             item_summary = ", ".join(detection_log)
-            prompt = f"Create a short description of the scene, describing the following items and their positions of where they lie in the frame: {item_summary}."
+            prompt = f"Simply describe the following items and their positions of where they lie in the frame: {item_summary}."
 
             # Use Generative AI to create the story
             model = genai.GenerativeModel("gemini-1.5-flash")
