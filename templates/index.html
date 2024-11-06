@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Real-Time Object Detection</title>
+  </head>
+  <body>
+    <h1>YOLO Real-Time Object Detection</h1>
+    <div>
+      <!-- Display the video feed from the video_feed route -->
+      <img
+        src="{{ url_for('video_feed') }}"
+        width="640"
+        height="480"
+        alt="Video Stream"
+      />
+    </div>
+  </body>
+</html>
