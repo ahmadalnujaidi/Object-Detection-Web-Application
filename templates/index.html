@@ -102,9 +102,24 @@
         try {
           const response = await fetch("/generate_story");
           const data = await response.json();
-          document.getElementById("story-text").textContent = data.story;
+          const storyText = document.getElementById("story-text");
+          storyText.textContent = data.story;
+          readStoryAloud(data.story); // Call TTS function after updating story
         } catch (error) {
           console.error("Error fetching story text:", error);
+        }
+      }
+
+      function readStoryAloud(text) {
+        if ("speechSynthesis" in window) {
+          const speech = new SpeechSynthesisUtterance(text);
+          speech.lang = "en-US";
+          speech.pitch = 1;
+          speech.rate = 1;
+          window.speechSynthesis.cancel(); // Stop any ongoing speech before starting
+          window.speechSynthesis.speak(speech);
+        } else {
+          console.error("Text-to-Speech not supported in this browser.");
         }
       }
 
