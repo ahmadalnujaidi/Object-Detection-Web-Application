@@ -12,7 +12,7 @@ load_dotenv()
 genai_api_key = os.getenv("GENERATIVE_AI_API_KEY")
 genai.configure(api_key=genai_api_key)
 
-model = YOLO('ModelForCAI.pt')
+model = YOLO('yolo11n.pt')
 
 app = Flask(__name__)
 
